@@ -16,22 +16,22 @@ What(O que):
 Sistema(site) de controle de produtos para loja;
 
 Why(Por que):
-Por que um colega necessita de um sistema intuitivo para a loja na qual trabalha;
+Por que um colega necessita de um sistema intuitivo para a loja na qual trabalha.
 
 Where(Onde):
 
 
 When(Quando):
-
+Até junho, mas quanto mais rápido melhor.
 
 Who(Quem):
-
+Nosso colega e integrante Lucas wilson e seus superiores.
 
 How(Como):
-
+Através de uma interface feita em html, css e javascript, e para o back-end php e MySql ou mariaDB.
 
 How Much(Quanto):
-
+No momento não temos base de preços para ter como referência, mas pesquisaremos, caso o projeto ocorra como esperado.
 
 How Measure / How many(Como medir/ Quantidade):
 
