@@ -35,5 +35,22 @@ No momento não há base de preços para uso como referência, mas será levado 
 
 How Measure / How many(Como medir/ Quantidade):
 
+# Sistemas(elementos)
+
+## METAS: 
+Um sistema funcional, prático e com boa visualização, capaz de, armazenar os dados de diferentes instrumentos musicais, e outros equipamentos, ou ferramentas voltadas para área da música em geral.
+
+## FRONTEIRAS:
+Começamos pensando em um sistema web local, para uso próprio dos funcionários de uma loja de música, e veremos a possibilidade de abrir o site para outros usuários conseguirem acessar através do navegador para uma busca mais direta e independente.
+
+## SUBSISTEMAS: 
+Um método de busca simples e eficaz, contendo todos os itens cadastrados no sistema, aba de login de usuários, métodos de pagamentos e descontos.
+
+## ENTRADAS:
+Produtos que serão cadastrados pelos funcionários.
+
+## SAÍDAS:
+Resultados das buscas dos produtos do sistema, e a quantidade de cada um deles.
+
 
 
