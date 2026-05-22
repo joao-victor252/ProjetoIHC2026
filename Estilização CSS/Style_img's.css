@@ -1,0 +1,58 @@
+/* ESTILIZAÇAO DAS FOTOS PARA OS INSTRUMENTOS DE CORDA */
+.galeria_corda{
+    display: flex;
+    height: 120px;
+    gap: 0px;
+    
+}
+
+.figure{
+    width: 250px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.Inst_corda{
+    width: 200px;
+    height: 170px;
+    border-radius: 10px;
+    border: 2px solid black;b
+    
+}
+
+figcaption{
+    margin-top: 10px;
+    text-align: center;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* ESTILIZAÇAO DAS OTOS PARA OS INSTRUMENTOS DE PERCUSSÃO */
+
+.galeria_perc{
+    display: flex;
+    gap: 20px;
+}
+
+.figure{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.inst_perc{
+    width: 250px;
+    border-radius: 10px;
+}
+
+figcaption{
+    margin-top: 10px;
+    text-align: center;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+}
+
+
