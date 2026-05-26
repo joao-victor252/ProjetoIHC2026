@@ -16,7 +16,7 @@ body {
 .cadastro-container {
     display: flex;
     flex-direction: column;
-    padding: 25px 35px;
+    padding: 40px 80px 120px ;
     background-color: white;
     border-radius: 18px;
     box-shadow: 10px 10px 10px rgb(31, 93, 31);
@@ -24,7 +24,8 @@ body {
 
 h1{
     font-size: 25px;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
+    margin-top: -20px;
 }
 
 form {
@@ -38,7 +39,7 @@ span {
     color: rgb(229, 50, 50);
 }
 
-.cad-btn{
+.log-btn{
     margin: 10px auto;
     padding: 5px;
     width: 80px;
@@ -50,9 +51,28 @@ span {
     border: none;
     box-shadow: 6px 6px 10px rgb(31, 93, 31);
     cursor: pointer;
+    transform: translateY(150%);
     transition: transform 0.5s;
 }
 
-.cad-btn:hover {
-    transform: scale(1.15);
+.log-btn:hover {
+    transform: scale(1.15) translateY(150%);
+    
+}
+
+input {
+    padding: 3px;
+    border: 2px solid;
+    border-radius: 10px;
+    border-color: grey;
+    width: 50;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+}
+
+footer {
+    transform: translateY(100px);
 }
