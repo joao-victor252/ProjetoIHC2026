@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Produto — PDV Instrumentos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== CABEÇALHO DA PÁGINA ===== -->
+  <header class="cabecalho">
+    <!-- Ícone decorativo de nota musical -->
+    <span class="icone-header">🎸</span>
+    <div>
+      <h1 class="titulo-header">Cadastro de Produto</h1>
+      <!-- Subtítulo informando o contexto do sistema -->
+      <p class="subtitulo-header">PDV — Loja de Instrumentos Musicais</p>
+    </div>
+  </header>
+
+  <!-- ===== CONTAINER CENTRAL DO FORMULÁRIO ===== -->
+  <main class="container">
+
+    <!-- Título da seção do formulário -->
+    <h2 class="titulo-form">Novo Produto</h2>
+
+    <!-- FORMULÁRIO DE CADASTRO -->
+    <!-- onsubmit chama a função JS que valida e processa os dados -->
+    <form id="formProduto" onsubmit="cadastrarProduto(event)">
+
+      <!-- ----- LINHA 1: Código de Barras + SKU ----- -->
+      <div class="linha">
+
+        <!-- Campo: Código de Barras (EAN/UPC) -->
+        <div class="campo">
+          <label for="codigoBarras">Código de Barras (EAN)</label>
+          <input
+            type="text"
+            id="codigoBarras"
+            name="codigoBarras"
+            placeholder="Ex: 7891234567890"
+            maxlength="14"
+          />
+        </div>
+
+        <!-- Campo: SKU interno da loja -->
+        <div class="campo">
+          <label for="sku">SKU Interno <span class="obrigatorio">*</span></label>
+          <input
+            type="text"
+            id="sku"
+            name="sku"
+            placeholder="Ex: GUIT-001"
+            required
+          />
+        </div>
+
+      </div>
+
+      <!-- ----- LINHA 2: Nome do Produto ----- -->
+      <div class="linha">
+        <div class="campo campo-largo">
+          <label for="nomeProduto">Nome do Produto <span class="obrigatorio">*</span></label>
+          <input
+            type="text"
+            id="nomeProduto"
+            name="nomeProduto"
+            placeholder="Ex: Guitarra Elétrica Fender Stratocaster"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- ----- LINHA 3: Categoria + Marca ----- -->
+      <div class="linha">
+
+        <!-- Campo: Categoria do produto (select com opções pré-definidas) -->
+        <div class="campo">
+          <label for="categoria">Categoria <span class="obrigatorio">*</span></label>
+          <select id="categoria" name="categoria" required>
+            <option value="">Selecione...</option>
+            <option value="cordas">Cordas (Guitarra, Violão, Baixo)</option>
+            <option value="teclas">Teclas e Piano</option>
+            <option value="sopros">Sopros</option>
+            <option value="percussao">Percussão</option>
+            <option value="acessorios">Acessórios</option>
+            <option value="amplificadores">Amplificadores</option>
+            <option value="estudio">Estúdio e Gravação</option>
+          </select>
+        </div>
+
+        <!-- Campo: Marca do produto -->
+        <div class="campo">
+          <label for="marca">Marca</label>
+          <input
+            type="text"
+            id="marca"
+            name="marca"
+            placeholder="Ex: Fender, Yamaha, Roland"
+          />
+        </div>
+
+      </div>
+
+      <!-- ----- LINHA 4: Preço de Custo + Preço de Venda + Margem ----- -->
+      <div class="linha">
+
+        <!-- Campo: Preço de custo (valor pago ao fornecedor) -->
+        <div class="campo">
+          <label for="precoCusto">Preço de Custo (R$)</label>
+          <!-- oninput chama a função JS que recalcula a margem automaticamente -->
+          <input
+            type="number"
+            id="precoCusto"
+            name="precoCusto"
+            placeholder="0,00"
+            min="0"
+            step="0.01"
+            oninput="calcularMargem()"
+          />
+        </div>
+
+        <!-- Campo: Preço de venda ao cliente -->
+        <div class="campo">
+          <label for="precoVenda">Preço de Venda (R$) <span class="obrigatorio">*</span></label>
+          <!-- oninput recalcula a margem sempre que o valor muda -->
+          <input
+            type="number"
+            id="precoVenda"
+            name="precoVenda"
+            placeholder="0,00"
+            min="0"
+            step="0.01"
+            required
+            oninput="calcularMargem()"
+          />
+        </div>
+
+        <!-- Campo: Margem de lucro — calculada automaticamente pelo JS -->
+        <div class="campo">
+          <label for="margem">Margem de Lucro</label>
+          <input
+            type="text"
+            id="margem"
+            name="margem"
+            placeholder="—"
+            readonly
+            class="campo-readonly"
+          />
+        </div>
+
+      </div>
+
+      <!-- ----- LINHA 5: Estoque Atual + Estoque Mínimo + Localização ----- -->
+      <div class="linha">
+
+        <!-- Campo: Quantidade atual em estoque -->
+        <div class="campo">
+          <label for="estoque">Estoque Atual <span class="obrigatorio">*</span></label>
+          <input
+            type="number"
+            id="estoque"
+            name="estoque"
+            placeholder="0"
+            min="0"
+            required
+          />
+        </div>
+
+        <!-- Campo: Estoque mínimo para alerta de reposição -->
+        <div class="campo">
+          <label for="estoqueMin">Estoque Mínimo</label>
+          <input
+            type="number"
+            id="estoqueMin"
+            name="estoqueMin"
+            placeholder="0"
+            min="0"
+          />
+        </div>
+
+        <!-- Campo: Localização física na loja (prateleira/corredor) -->
+        <div class="campo">
+          <label for="localizacao">Localização na Loja</label>
+          <input
+            type="text"
+            id="localizacao"
+            name="localizacao"
+            placeholder="Ex: Corredor A, Prateleira 3"
+          />
+        </div>
+
+      </div>
+
+      <!-- ----- LINHA 6: Descrição / Observações ----- -->
+      <div class="linha">
+        <div class="campo campo-largo">
+          <label for="descricao">Descrição / Observações</label>
+          <!-- Textarea para informações adicionais do produto -->
+          <textarea
+            id="descricao"
+            name="descricao"
+            rows="3"
+            placeholder="Cor, especificações técnicas, condição, observações de venda..."
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- ----- ÁREA DE MENSAGEM DE FEEDBACK ----- -->
+      <!-- Oculta por padrão; o JS exibe após o envio do formulário -->
+      <div id="mensagem" class="mensagem" style="display: none;"></div>
+
+      <!-- ----- BOTÕES DE AÇÃO ----- -->
+      <div class="botoes">
+
+        <!-- Botão Limpar: chama a função JS que reseta o formulário -->
+        <button type="button" class="btn-limpar" onclick="limparFormulario()">
+          Limpar
+        </button>
+
+        <!-- Botão Salvar: submete o formulário (dispara onsubmit) -->
+        <button type="submit" class="btn-salvar">
+          ✓ Salvar Produto
+        </button>
+
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- ----- TABELA DE PRODUTOS CADASTRADOS ----- -->
+  <!-- Seção que lista os produtos adicionados durante a sessão -->
+  <section class="secao-lista" id="secaoLista" style="display: none;">
+
+    <div class="container">
+      <h2 class="titulo-form">Produtos Cadastrados</h2>
+
+      <!-- Tabela gerada dinamicamente pelo JS -->
+      <div class="tabela-wrapper">
+        <table id="tabelaProdutos">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Nome</th>
+              <th>Categoria</th>
+              <th>Preço Venda</th>
+              <th>Estoque</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <!-- tbody preenchido pelo JS com cada novo produto -->
+          <tbody id="corpoTabela"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Importação do arquivo JavaScript externo -->
+  <script src="script.js"></script>
+
+</body>
+</html>

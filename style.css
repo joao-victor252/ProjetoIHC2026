@@ -1,0 +1,345 @@
+/* ============================================================
+   style.css — Estilos do Cadastro de Produto PDV
+   Loja de Instrumentos Musicais
+   ============================================================ */
+
+
+/* ===== VARIÁVEIS DE COR (paleta verde PDV) ===== */
+:root {
+  --verde-escuro:   #1b4332;  /* Fundo do cabeçalho e botão principal */
+  --verde-medio:    #2d6a4f;  /* Bordas ativas e hover */
+  --verde-claro:    #52b788;  /* Destaque, margem positiva */
+  --verde-suave:    #d8f3dc;  /* Fundo de campos readonly e badges */
+  --verde-hover:    #40916c;  /* Hover do botão salvar */
+  --branco:         #ffffff;
+  --cinza-fundo:    #f4f6f4;  /* Fundo geral da página */
+  --cinza-borda:    #c8d8c8;  /* Borda padrão dos inputs */
+  --cinza-texto:    #374737;  /* Texto principal */
+  --cinza-label:    #4a5e4a;  /* Cor das labels */
+  --vermelho-leve:  #e63946;  /* Indicador de campo obrigatório e erros */
+  --sombra:         rgba(27, 67, 50, 0.12);
+}
+
+
+/* ===== RESET BÁSICO ===== */
+/* Remove margens e paddings padrão do navegador e define box-sizing uniforme */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ===== BODY ===== */
+/* Fundo suave e fonte padrão para toda a página */
+body {
+  background-color: var(--cinza-fundo);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 14px;
+  color: var(--cinza-texto);
+  min-height: 100vh;
+  padding-bottom: 60px; /* Espaço para a listagem ao final */
+}
+
+
+/* ===== CABEÇALHO ===== */
+/* Barra superior com cor escura da loja */
+.cabecalho {
+  background-color: var(--verde-escuro);
+  color: var(--branco);
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px var(--sombra);
+}
+
+/* Ícone grande no cabeçalho */
+.icone-header {
+  font-size: 36px;
+  line-height: 1;
+}
+
+/* Título principal do cabeçalho */
+.titulo-header {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* Subtítulo menor abaixo do título */
+.subtitulo-header {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-top: 2px;
+}
+
+
+/* ===== CONTAINER CENTRAL ===== */
+/* Limita a largura do formulário e centraliza na página */
+.container {
+  max-width: 860px;
+  margin: 32px auto;
+  background: var(--branco);
+  border-radius: 10px;
+  padding: 28px 32px;
+  box-shadow: 0 2px 14px var(--sombra);
+}
+
+
+/* ===== TÍTULO INTERNO DO FORMULÁRIO ===== */
+.titulo-form {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--verde-escuro);
+  margin-bottom: 22px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--verde-suave); /* Linha divisória verde suave */
+}
+
+
+/* ===== LINHA DE CAMPOS ===== */
+/* Linha flexível que agrupa campos lado a lado */
+.linha {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap; /* Quebra para baixo em telas pequenas */
+}
+
+
+/* ===== CAMPO INDIVIDUAL ===== */
+/* Cada campo ocupa espaço igual dentro da linha */
+.campo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 160px; /* Largura mínima antes de quebrar linha */
+}
+
+/* Campo que ocupa toda a largura disponível (sem dividir com outros) */
+.campo-largo {
+  flex: 1 1 100%;
+}
+
+
+/* ===== LABELS ===== */
+label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cinza-label);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* Asterisco vermelho indicando campo obrigatório */
+.obrigatorio {
+  color: var(--vermelho-leve);
+}
+
+
+/* ===== INPUTS, SELECTS E TEXTAREA ===== */
+/* Estilo unificado para todos os campos de entrada */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--cinza-borda);
+  border-radius: 6px;
+  font-size: 13.5px;
+  color: var(--cinza-texto);
+  background-color: var(--branco);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  font-family: inherit;
+}
+
+/* Borda e sombra verde ao focar em qualquer campo */
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--verde-medio);
+  box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.2);
+}
+
+/* Estilo da seta do select */
+select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+/* Textarea sem redimensionamento horizontal */
+textarea {
+  resize: vertical;
+}
+
+/* Campos somente-leitura (ex.: margem calculada) */
+.campo-readonly {
+  background-color: var(--verde-suave) !important;
+  color: var(--verde-escuro) !important;
+  font-weight: 700;
+  cursor: default;
+  border-color: var(--verde-claro) !important;
+}
+
+
+/* ===== BOTÕES DE AÇÃO ===== */
+/* Contêiner que alinha os botões à direita */
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* Botão base compartilhado */
+.btn-limpar,
+.btn-salvar {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+/* Botão Limpar — visual secundário (transparente com borda) */
+.btn-limpar {
+  background: transparent;
+  border: 1.5px solid var(--verde-medio);
+  color: var(--verde-medio);
+}
+
+.btn-limpar:hover {
+  background-color: var(--verde-suave);
+}
+
+/* Botão Salvar — destaque verde escuro */
+.btn-salvar {
+  background-color: var(--verde-escuro);
+  color: var(--branco);
+  letter-spacing: 0.3px;
+}
+
+.btn-salvar:hover {
+  background-color: var(--verde-hover);
+}
+
+/* Pequena animação ao clicar nos botões */
+.btn-limpar:active,
+.btn-salvar:active {
+  transform: scale(0.97);
+}
+
+
+/* ===== MENSAGEM DE FEEDBACK ===== */
+/* Bloco que aparece após salvar ou em caso de erro */
+.mensagem {
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+/* Variação de sucesso */
+.mensagem.sucesso {
+  background-color: var(--verde-suave);
+  color: var(--verde-escuro);
+  border-left: 4px solid var(--verde-claro);
+}
+
+/* Variação de erro */
+.mensagem.erro {
+  background-color: #ffe5e5;
+  color: var(--vermelho-leve);
+  border-left: 4px solid var(--vermelho-leve);
+}
+
+
+/* ===== SEÇÃO DA LISTAGEM DE PRODUTOS ===== */
+.secao-lista {
+  margin-top: 0;
+}
+
+/* Wrapper com scroll horizontal caso a tabela seja larga */
+.tabela-wrapper {
+  overflow-x: auto;
+}
+
+
+/* ===== TABELA DE PRODUTOS ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+/* Cabeçalho da tabela */
+thead tr {
+  background-color: var(--verde-escuro);
+  color: var(--branco);
+}
+
+thead th {
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Linhas do corpo da tabela */
+tbody tr {
+  border-bottom: 1px solid var(--verde-suave);
+  transition: background-color 0.15s;
+}
+
+/* Fundo levemente colorido ao passar o mouse */
+tbody tr:hover {
+  background-color: #f0faf4;
+}
+
+tbody td {
+  padding: 9px 14px;
+  color: var(--cinza-texto);
+}
+
+/* Botão de remover produto na tabela */
+.btn-remover {
+  background: transparent;
+  border: 1.5px solid var(--vermelho-leve);
+  color: var(--vermelho-leve);
+  border-radius: 5px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.btn-remover:hover {
+  background-color: #ffe5e5;
+}
+
+
+/* ===== RESPONSIVIDADE BÁSICA ===== */
+/* Em telas pequenas, o formulário ocupa mais espaço */
+@media (max-width: 600px) {
+  .container {
+    margin: 16px;
+    padding: 20px 16px;
+  }
+
+  .cabecalho {
+    padding: 14px 16px;
+  }
+
+  /* Cada campo ocupa 100% em telas muito estreitas */
+  .campo {
+    min-width: 100%;
+  }
+}
