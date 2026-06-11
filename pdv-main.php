@@ -1,3 +1,17 @@
+<?php 
+if(session_status() === PHP_SESSION_NONE){
+  session_start();
+}
+
+if (empty($_SESSION['logado']) || ($_SESSION['logado'] !== true)){
+  session_unset();
+  session_destroy();
+  header('Location: login.php');
+  exit();
+}
+$nome_usuario = $_SESSION['nome_usuario'];
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -9,7 +23,8 @@
 <body>
   <header class="header">
     <h1>🎸 PDV Instrumentos Musicais</h1>
-    <span class="operador">Operador: Admin</span>
+    <span class="operador">Operador: <?=$nome_usuario?></span>
+    <a href="logout.php" class="btn-sair">Sair</a>
   </header>
 
   <main class="container">

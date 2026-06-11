@@ -32,7 +32,6 @@ form {
     display: flex;
     flex-direction: column;
     gap: 5px;
-
 }
 
 span {
@@ -41,13 +40,13 @@ span {
 
 .log-btn{
     margin: 10px auto;
-    padding: 5px;
+    padding: 10px;
     width: 80px;
     justify-content: center;
     background-color: #3ebf76;
     color: white;
     font-weight: bolder;
-    border-radius: 15px;
+    border-radius: 18px;
     border: none;
     box-shadow: 6px 6px 10px rgb(31, 93, 31);
     cursor: pointer;
@@ -61,7 +60,7 @@ span {
 }
 
 input {
-    padding: 3px;
+    padding: 8px;
     border: 2px solid;
     border-radius: 10px;
     border-color: grey;
