@@ -1,3 +1,23 @@
+<?php 
+require_once 'db_connect.php';
+
+if(session_status() === PHP_SESSION_NONE){
+  session_start();
+}
+
+if (empty($_SESSION['logado']) || ($_SESSION['logado'] !== true) || ($_SESSION['cargo_usuario'] !== 'gerente')){
+  session_unset();
+  session_destroy();
+  header('Location: login.php');
+  exit();
+}
+$nome_usuario = $_SESSION['nome_usuario'];
+?>
+
+<?php 
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -13,7 +33,7 @@
         <form action="#" method="post">
         
         <label for="nome">Nome: <span>*</span></label>
-        <input type="text" name="nome" id="nome" placeholder="Digite seu nome:" required>
+        <input type="text" name="nome" id="nome" placeholder="Digite seu nome:" required minlength="3">
 
         <label for="dat-nasc">Data de nascimento: <span>*</span></label>
         <input type="date" name="nascimento" id="nascimento" required>
@@ -44,7 +64,7 @@
         <label for="senha">Senha: <span>*</span></label>
         <input type="password" name="senha" id="senha" required minlength="8" placeholder="Digite sua senha:">
         
-        <input type="submit" value="Cadastrar" class="cad-btn">
+        <button type="submit" name="cad-btn" class="cad-btn">Cadastrar</button>
 
         </form>
     </div>

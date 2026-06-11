@@ -1,7 +1,7 @@
 <?php 
 //Conexão
 require_once 'db_connect.php';
-require_once 'validacao.php';
+require_once 'validacaoLogin.php';
 
 //Ativar sessão
 if (session_status() === PHP_SESSION_NONE) {
@@ -22,7 +22,7 @@ if(isset($_POST['log-btn'])):
         $senha_validada = $validador->getSenha();
 
         try {
-            $sql = "SELECT id, nome, email, senha FROM funcionarios WHERE email = :email LIMIT 1";
+            $sql = "SELECT id, nome, email, cargo, senha FROM funcionarios WHERE email = :email LIMIT 1";
 
             $stmt = $pdo->prepare($sql);
 
@@ -37,6 +37,7 @@ if(isset($_POST['log-btn'])):
                     $_SESSION['logado'] = true;
                     $_SESSION['id_usuario'] = $funcionario['id'];
                     $_SESSION['nome_usuario'] = $funcionario['nome'];
+                    $_SESSION['cargo_usuario'] = $funcionario['cargo'];
 
                     header('Location: pdv-main.php');
                     exit();
@@ -69,10 +70,10 @@ endif;
         <form action="<?=$_SERVER['PHP_SELF']; ?>" method="POST">
         
         <label for="nome">E-mail: <span>*</span></label>
-        <input type="email" name="email" id="email" placeholder="ex@gmail.com:" >
+        <input type="email" name="email" id="email" placeholder="ex@gmail.com:" required>
 
         <label for="senha">Senha: <span>*</span></label>
-        <input type="password" name="senha" id="senha"  minlength="8" placeholder="Digite sua senha:">
+        <input type="password" name="senha" id="senha" required minlength="8" placeholder="Digite sua senha:">
 
         <?php if(!empty($erros)): ?>
             <div class="bloco-erros" style="color: red; margin-bottom: 15px;">
