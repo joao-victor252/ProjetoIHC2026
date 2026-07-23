@@ -73,7 +73,7 @@ class validarCad {
         }
 
         // Validação matemática dos dígitos verificadores do CPF
-        for ($t = 9; $t < 11; $t++) {
+        /*for ($t = 9; $t < 11; $t++) {
             for ($d = 0, $c = 0; $c < $t; $c++) {
                 $d += $cpf[$c] * (($t + 1) - $c);
             }
@@ -82,7 +82,7 @@ class validarCad {
                 $this->erros[] = "CPF inválido.";
                 return;
             }
-        }
+        }*/
 
         $this->cpf = $cpf;
     }

@@ -1,3 +1,66 @@
+<?php 
+require_once 'db_connect.php';
+require_once 'validarProduto.php';
+
+if(session_status() === PHP_SESSION_NONE){
+  session_start();
+}
+
+if (empty($_SESSION['logado']) || ($_SESSION['logado'] !== true) || ($_SESSION['cargo_usuario'] !== 'gerente')){
+  session_unset();
+  session_destroy();
+  header('Location: login.php');
+  exit();
+}
+
+$nome_usuario = $_SESSION['nome_usuario'];
+?>
+
+<?php 
+$erros = array();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST'):
+
+  $validadorProd = new validarProduto();
+  $erros = $validadorProd->validar(
+    $_POST['nomeProduto'],
+    $_POST['estoque'],
+    $_POST['precoVenda'],
+    $_POST['precoCusto'],
+    $_POST['sku'],
+    $_POST['codigoBarras'],
+    $_POST['unidade'],
+    $_POST['categoria']
+  );
+  
+    
+    
+    if (empty($erros)) {
+      try {
+        $sql = "INSERT INTO produtos (nome, quant_estoque, preco_unitario, preco_custo, sku, codigo_barras, unidade, tipo) 
+                  VALUES (:nome, :quant, :preco_u, :preco_c, :sku, :barras, :unidade, :tipo)";
+
+          $stmt = $pdo->prepare($sql);
+          $stmt->bindValue(':nome', $validadorProd->getNome());
+          $stmt->bindValue(':quant', $validadorProd->getQuantEstoque());
+          $stmt->bindValue(':quant', $validadorProd->getQuantEstoque());
+          $stmt->bindValue(':preco_u', $validadorProd->getPrecoUnitario());
+          $stmt->bindValue(':preco_c', $validadorProd->getPrecoCusto());
+          $stmt->bindValue(':sku', $validadorProd->getSku());
+          $stmt->bindValue(':barras', $validadorProd->getCodigoBarras());
+          $stmt->bindValue(':unidade', $validadorProd->getUnidade());
+          $stmt->bindValue(':tipo', $_POST['categoria']);
+         
+          
+          $stmt->execute();
+          header("Location: listarProdutos.php");
+      } catch (PDOException $e) {
+        $erros[] = "Erro no banco: " . $e->getMessage();
+      }
+    }
+endif;
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -27,7 +90,7 @@
 
     <!-- FORMULÁRIO DE CADASTRO -->
     <!-- onsubmit chama a função JS que valida e processa os dados -->
-    <form id="formProduto" onsubmit="cadastrarProduto(event)">
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" id="formProduto" method="post">
 
       <!-- ----- LINHA 1: Código de Barras + SKU ----- -->
       <div class="linha">
@@ -79,7 +142,7 @@
         <div class="campo">
           <label for="categoria">Categoria <span class="obrigatorio">*</span></label>
           <select id="categoria" name="categoria" required>
-            <option value="">Selecione...</option>
+            <option value="" disabled selected>Selecione...</option>
             <option value="cordas">Cordas (Guitarra, Violão, Baixo)</option>
             <option value="teclas">Teclas e Piano</option>
             <option value="sopros">Sopros</option>
@@ -90,16 +153,19 @@
           </select>
         </div>
 
-        <!-- Campo: Marca do produto -->
         <div class="campo">
-          <label for="marca">Marca</label>
-          <input
-            type="text"
-            id="marca"
-            name="marca"
-            placeholder="Ex: Fender, Yamaha, Roland"
-          />
+          <label for="unidade">Unidade <span class="obrigatorio">*</span></label>
+          <select id="unidade" name="unidade" required>
+            <option value="" disabled <?php echo !isset($_POST['unidade']) ? 'selected' : ''; ?>>Selecione...</option>
+            <option value="UN" <?php echo (isset($_POST['unidade']) && $_POST['unidade'] == 'UN') ? 'selected' : ''; ?>>UN (Unidade)</option>
+            <option value="PC" <?php echo (isset($_POST['unidade']) && $_POST['unidade'] == 'PC') ? 'selected' : ''; ?>>PC (Peça)</option>
+            <option value="PAR" <?php echo (isset($_POST['unidade']) && $_POST['unidade'] == 'PAR') ? 'selected' : ''; ?>>PR (Par - ex: Baquetas)</option>
+            <option value="JG" <?php echo (isset($_POST['unidade']) && $_POST['unidade'] == 'JG') ? 'selected' : ''; ?>>JG (Jogo - ex: Encordoamento)</option>
+            <option value="CX" <?php echo (isset($_POST['unidade']) && $_POST['unidade'] == 'CX') ? 'selected' : ''; ?>>CX (Caixa)</option>
+            <option value="MT" <?php echo (isset($_POST['unidade']) && $_POST['unidade'] == 'MT') ? 'selected' : ''; ?>>MT (Metro - ex: Cabos de Rolo)</option>
+          </select>
         </div>
+      </div>
 
       </div>
 
@@ -116,9 +182,7 @@
             name="precoCusto"
             placeholder="0,00"
             min="0"
-            step="0.01"
-            oninput="calcularMargem()"
-          />
+            step="0.01"/>
         </div>
 
         <!-- Campo: Preço de venda ao cliente -->
@@ -132,24 +196,8 @@
             placeholder="0,00"
             min="0"
             step="0.01"
-            required
-            oninput="calcularMargem()"
-          />
+            required/>
         </div>
-
-        <!-- Campo: Margem de lucro — calculada automaticamente pelo JS -->
-        <div class="campo">
-          <label for="margem">Margem de Lucro</label>
-          <input
-            type="text"
-            id="margem"
-            name="margem"
-            placeholder="—"
-            readonly
-            class="campo-readonly"
-          />
-        </div>
-
       </div>
 
       <!-- ----- LINHA 5: Estoque Atual + Estoque Mínimo + Localização ----- -->
@@ -167,46 +215,16 @@
             required
           />
         </div>
-
-        <!-- Campo: Estoque mínimo para alerta de reposição -->
-        <div class="campo">
-          <label for="estoqueMin">Estoque Mínimo</label>
-          <input
-            type="number"
-            id="estoqueMin"
-            name="estoqueMin"
-            placeholder="0"
-            min="0"
-          />
-        </div>
-
-        <!-- Campo: Localização física na loja (prateleira/corredor) -->
-        <div class="campo">
-          <label for="localizacao">Localização na Loja</label>
-          <input
-            type="text"
-            id="localizacao"
-            name="localizacao"
-            placeholder="Ex: Corredor A, Prateleira 3"
-          />
-        </div>
-
       </div>
 
-      <!-- ----- LINHA 6: Descrição / Observações ----- -->
-      <div class="linha">
-        <div class="campo campo-largo">
-          <label for="descricao">Descrição / Observações</label>
-          <!-- Textarea para informações adicionais do produto -->
-          <textarea
-            id="descricao"
-            name="descricao"
-            rows="3"
-            placeholder="Cor, especificações técnicas, condição, observações de venda..."
-          ></textarea>
-        </div>
-      </div>
-
+<?php if (!empty($erros)): ?>
+    <div style="color:red;">
+        <?php foreach($erros as $erro): ?>
+            <p><?php echo $erro; ?></p>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+    
       <!-- ----- ÁREA DE MENSAGEM DE FEEDBACK ----- -->
       <!-- Oculta por padrão; o JS exibe após o envio do formulário -->
       <div id="mensagem" class="mensagem" style="display: none;"></div>
@@ -233,30 +251,6 @@
   <!-- ----- TABELA DE PRODUTOS CADASTRADOS ----- -->
   <!-- Seção que lista os produtos adicionados durante a sessão -->
   <section class="secao-lista" id="secaoLista" style="display: none;">
-
-    <div class="container">
-      <h2 class="titulo-form">Produtos Cadastrados</h2>
-
-      <!-- Tabela gerada dinamicamente pelo JS -->
-      <div class="tabela-wrapper">
-        <table id="tabelaProdutos">
-          <thead>
-            <tr>
-              <th>SKU</th>
-              <th>Nome</th>
-              <th>Categoria</th>
-              <th>Preço Venda</th>
-              <th>Estoque</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <!-- tbody preenchido pelo JS com cada novo produto -->
-          <tbody id="corpoTabela"></tbody>
-        </table>
-      </div>
-
-    </div>
-  </section>
 
   <!-- Importação do arquivo JavaScript externo -->
   <script src="script.js"></script>

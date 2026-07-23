@@ -33,7 +33,8 @@ if(isset($_POST['log-btn'])):
             $funcionario = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if($funcionario):
-                if($senha_validada == $funcionario['senha']):
+                if(password_verify($senha_validada, $funcionario['senha'])):
+                //if($senha_validada === $funcionario['senha']): Login sem hash
                     $_SESSION['logado'] = true;
                     $_SESSION['id_usuario'] = $funcionario['id'];
                     $_SESSION['nome_usuario'] = $funcionario['nome'];
@@ -60,7 +61,7 @@ endif;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="estilização/Login.css">
+    <link rel="stylesheet" href="estilizacao/Login.css">
     <title>PDV SYSTEM| Login</title>
 </head>
 <body>
